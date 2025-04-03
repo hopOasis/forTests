@@ -46,7 +46,6 @@ jobs:
           ls -la
           ls -la login_test || echo "login_test directory not found"
       - name: Build and test with Maven
-        working-directory: ./login_test
         run: |
           export CHROME_BIN=/usr/bin/google-chrome
           mvn clean test -X \
