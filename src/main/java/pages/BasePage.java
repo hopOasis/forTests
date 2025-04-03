@@ -16,9 +16,6 @@ import java.time.Duration;
              this.driver = driver;
          }
 
-         public WebElement findElement(String locator) {
-             return driver.findElement(By.xpath(locator));
-         }
 
          int BASIC_TIME = 20;
 

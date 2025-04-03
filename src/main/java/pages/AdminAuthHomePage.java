@@ -1,9 +1,7 @@
 package pages;
 
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.ConfigLoader;
 
@@ -22,11 +20,11 @@ public class AdminAuthHomePage extends BasePage {
     private final String LOGIN_BUTTON = ("//button[@type='submit']");
     private final String ERROR_MESSAGE = ("//div[@class='login-error']");
     private final String LOGOUT_BUTTON = ("//button//span[contains(text(), 'Log out')]");
-    private final String DASHBOARD_HEADING = ("//*[contains(@class, 'label') and contains(text(), 'Dashboard')]");
+    private final String DASHBOARD_HEADING = ("//a[contains(@class, 'link') and contains(@href, '/layout/dashboard')]");
 
     public void openAdminHomePage() {
         driver.get(BASE_URL);
-        new WebDriverWait(driver, Duration.ofSeconds(20)).until(
+        new WebDriverWait(driver, Duration.ofSeconds(30)).until(
                 webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete")
         );
     }
@@ -58,16 +56,7 @@ public class AdminAuthHomePage extends BasePage {
 
     public void clickLoginButton() {
         WebElement loginButton = waitElementToBeVisible(LOGIN_BUTTON);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        try {
-            wait.until(driver -> {
-                boolean isDisabled = loginButton.getAttribute("disabled") != null;
-                System.out.println("Login button disabled: " + isDisabled);  // Debug logging
-                return !isDisabled;
-            });
-        } catch (Exception e) {
-            System.out.println("Login button remained disabled. Attempting to click anyway.");
-        }
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         try {
             loginButton.click();
         } catch (ElementClickInterceptedException e) {
@@ -103,8 +92,11 @@ public class AdminAuthHomePage extends BasePage {
 
     public boolean isDashboardDisplayed() {
         try {
-            return waitElementToBeVisible(DASHBOARD_HEADING).isDisplayed();
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+            WebElement dashboard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(DASHBOARD_HEADING)));
+            return dashboard.isDisplayed();
         } catch (Exception e) {
+            System.out.println("Dashboard не знайдено: " + e.getMessage());
             return false;
         }
     }

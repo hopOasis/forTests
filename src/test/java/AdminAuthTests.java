@@ -96,12 +96,6 @@ public class AdminAuthTests extends TestInit {
             adminAuthHomePage.enterInValidPassword("wrongpassword");
             adminAuthHomePage.clickLoginButton();
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             String errorMessage = adminAuthHomePage.getErrorMessage();
 
             Assertions.assertTrue(
