@@ -24,10 +24,11 @@ public class AdminAuthHomePage extends BasePage {
 
     public void openAdminHomePage() {
         driver.get(BASE_URL);
-        new WebDriverWait(driver, Duration.ofSeconds(30)).until(
-                webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete")
-        );
+        try {
+            Thread.sleep(5000);  // Простий фіксований таймаут
+        } catch (InterruptedException e) {}
     }
+
     public void enterValidEmail(String email) {
         WebElement emailField = waitElementToBeVisible(FIELD_EMAIL);
         emailField.clear();

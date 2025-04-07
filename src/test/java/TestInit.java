@@ -13,23 +13,18 @@ public class TestInit {
     public WebDriver driver;
 
 
-    @BeforeAll
-    public static void setupClass() {
-        WebDriverManager.chromedriver().setup();
-    }
-
     @BeforeEach
     public void setupTest() {
         ChromeOptions options = new ChromeOptions();
-        if (System.getenv("CI") != null) {
-            options.addArguments("--headless");
-            options.addArguments("--disable-gpu");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-        }
+        options.addArguments("--headless=new");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
+        options.addArguments("--remote-allow-origins=*");
 
-       driver = new ChromeDriver(options);
-       driver.manage().window().maximize();
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver(options);
     }
 
     @AfterEach

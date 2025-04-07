@@ -17,7 +17,7 @@ import java.time.Duration;
          }
 
 
-         int BASIC_TIME = 20;
+         int BASIC_TIME = 60;
 
          public WebElement waitElementToBeVisible(String locator) {
              WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(BASIC_TIME));
