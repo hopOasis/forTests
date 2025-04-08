@@ -24,25 +24,15 @@ public class AdminAuthHomePage extends BasePage {
 
     public void openAdminHomePage() {
         driver.get(BASE_URL);
-        try {
-            Thread.sleep(5000);  // Простий фіксований таймаут
-        } catch (InterruptedException e) {}
     }
 
     public void enterValidEmail(String email) {
-        WebElement emailField = waitElementToBeVisible(FIELD_EMAIL);
-        emailField.clear();
-        emailField.sendKeys(email);
-        System.out.println("Entered email: " + email);
+        waitElementToBeVisible(FIELD_EMAIL).sendKeys(email);
     }
 
     public void enterValidPassword(String password) {
-        WebElement passwordField = waitElementToBeVisible(FIELD_PASSWORD);
-        passwordField.clear();
-        passwordField.sendKeys(password);
-        System.out.println("Entered password: " + password.replaceAll(".", "*"));
+        waitElementToBeVisible(FIELD_PASSWORD).sendKeys(password);
     }
-
 
 
     public void enterInValidEmail(String email) {
@@ -56,14 +46,7 @@ public class AdminAuthHomePage extends BasePage {
 
 
     public void clickLoginButton() {
-        WebElement loginButton = waitElementToBeVisible(LOGIN_BUTTON);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        try {
-            loginButton.click();
-        } catch (ElementClickInterceptedException e) {
-            System.out.println("Using JavaScript click as fallback");
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
-        }
+        waitElementToBeVisible(LOGIN_BUTTON).click();
     }
 
 
@@ -93,7 +76,7 @@ public class AdminAuthHomePage extends BasePage {
 
     public boolean isDashboardDisplayed() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
             WebElement dashboard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(DASHBOARD_HEADING)));
             return dashboard.isDisplayed();
         } catch (Exception e) {

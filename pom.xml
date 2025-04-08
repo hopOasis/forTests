@@ -95,8 +95,28 @@
             <version>1.5.16</version>
             <scope>compile</scope>
         </dependency>
-
-
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.5</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <webdriver.chrome.driver>${webdriver.chrome.driver}</webdriver.chrome.driver>
+                        <BASE_URL>${BASE_URL}</BASE_URL>
+                        <ADMIN_USERNAME>${ADMIN_USERNAME}</ADMIN_USERNAME>
+                        <ADMIN_PASSWORD>${ADMIN_PASSWORD}</ADMIN_PASSWORD>
+                    </systemPropertyVariables>
+                    <testFailureIgnore>false</testFailureIgnore>
+                    <reuseForks>false</reuseForks>
+                    <forkCount>1</forkCount>
+                    <argLine>-Xmx1024m</argLine>
+                    <forkedProcessTimeoutInSeconds>300</forkedProcessTimeoutInSeconds>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
