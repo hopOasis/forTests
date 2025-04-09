@@ -40,18 +40,11 @@ jobs:
           echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
-      - name: Check directory structure
-        run: |
-          pwd
-          ls -la
-          ls -la login_test || echo "login_test directory not found"
+
       - name: Build and test with Maven
         run: |
           export CHROME_BIN=/usr/bin/google-chrome
-          mvn clean test -X \
-            -DADMIN_USERNAME='${{ secrets.ADMIN_USERNAME }}' \
-            -DADMIN_PASSWORD='${{ secrets.ADMIN_PASSWORD }}' \
-            -DBASE_URL='${{ secrets.BASE_URL }}'
+          mvn clean test -DADMIN_USERNAME='${{ secrets.ADMIN_USERNAME }}' -DADMIN_PASSWORD='${{ secrets.ADMIN_PASSWORD }}' -DBASE_URL='${{ secrets.BASE_URL }}'
         env:
           ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
@@ -62,4 +55,4 @@ jobs:
         if: always()
         with:
           name: test-report
-          path: login_test/target/surefire-reports
+          path: target/surefire-reports

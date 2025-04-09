@@ -11,35 +11,19 @@ public class ConfigLoader {
         try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
             if (input != null) {
                 properties.load(input);
-                System.out.println("Successfully loaded config.properties");
-            } else {
-                System.err.println("ERROR: config.properties file not found!");
             }
         } catch (IOException e) {
-            System.err.println("Failed to load properties file: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-        System.out.println("Available properties:");
-        for (String key : properties.stringPropertyNames()) {
-            if (key.contains("PASSWORD")) {
-                System.out.println(key + "=*****");
-            } else {
-                System.out.println(key + "=" + properties.getProperty(key));
-            }
         }
     }
 
     public static String getProperty(String key) {
-
         String value = System.getProperty(key);
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             return value;
         }
 
-
         value = System.getenv(key);
-        if (value != null) {
+        if (value != null && !value.isEmpty()) {
             return value;
         }
 

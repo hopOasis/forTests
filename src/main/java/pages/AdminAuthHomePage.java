@@ -24,46 +24,50 @@ public class AdminAuthHomePage extends BasePage {
 
     public void openAdminHomePage() {
         driver.get(BASE_URL);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(FIELD_EMAIL)));
     }
 
     public void enterValidEmail(String email) {
-        waitElementToBeVisible(FIELD_EMAIL).sendKeys(email);
+        WebElement emailField = waitElementToBeVisible(FIELD_EMAIL);
+        emailField.clear();
+        emailField.sendKeys(email);
     }
 
     public void enterValidPassword(String password) {
-        waitElementToBeVisible(FIELD_PASSWORD).sendKeys(password);
+        WebElement passwordField = waitElementToBeVisible(FIELD_PASSWORD);
+        passwordField.clear();
+        passwordField.sendKeys(password);
     }
-
 
     public void enterInValidEmail(String email) {
         waitElementToBeVisible(FIELD_EMAIL).sendKeys(email);
     }
 
-
     public void enterInValidPassword(String password) {
         waitElementToBeVisible(FIELD_PASSWORD).sendKeys(password);
     }
 
-
     public void clickLoginButton() {
-        waitElementToBeVisible(LOGIN_BUTTON).click();
+        WebElement loginButton = waitElementToBeVisible(LOGIN_BUTTON);
+        try {
+            loginButton.click();
+        } catch (ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", loginButton);
+        }
     }
-
 
     public String getErrorMessage() {
         try {
             return waitElementToBeVisible(ERROR_MESSAGE).getText();
         } catch (Exception e) {
-            System.out.println("Error finding message: " + e.getMessage());
             return "";
         }
     }
 
-
     public void clickLogoutButton() {
         waitElementToBeVisible(LOGOUT_BUTTON).click();
     }
-
 
     public boolean isLoginFormDisplayed() {
         try {
@@ -73,14 +77,12 @@ public class AdminAuthHomePage extends BasePage {
         }
     }
 
-
     public boolean isDashboardDisplayed() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             WebElement dashboard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(DASHBOARD_HEADING)));
             return dashboard.isDisplayed();
         } catch (Exception e) {
-            System.out.println("Dashboard не знайдено: " + e.getMessage());
             return false;
         }
     }

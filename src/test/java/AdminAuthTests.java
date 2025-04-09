@@ -15,6 +15,7 @@ public class AdminAuthTests extends TestInit {
     public AdminAuthHomePage adminAuthHomePage;
     private String adminUsername;
     private String adminPassword;
+    private String baseUrl;
 
 
     @Override
@@ -25,7 +26,11 @@ public class AdminAuthTests extends TestInit {
 
         adminUsername = ConfigLoader.getProperty("ADMIN_USERNAME");
         adminPassword = ConfigLoader.getProperty("ADMIN_PASSWORD");
+        baseUrl = ConfigLoader.getProperty("BASE_URL");
 
+        if (adminUsername == null || adminPassword == null || baseUrl == null) {
+            Assertions.fail("Missing required environment variables: ADMIN_USERNAME, ADMIN_PASSWORD, BASE_URL");
+        }
 
     }
 
@@ -37,8 +42,8 @@ public class AdminAuthTests extends TestInit {
         adminAuthHomePage.enterValidPassword(adminPassword);
         adminAuthHomePage.clickLoginButton();
 
-        boolean isDashboardDisplayed = adminAuthHomePage.isDashboardDisplayed();
-        Assertions.assertTrue(isDashboardDisplayed, "Сторінка Dashboard не відображається після успішного входу");
+        adminAuthHomePage.clickLoginButton();
+        Assertions.assertTrue(adminAuthHomePage.isDashboardDisplayed(), "Dashboard не відображається після входу");
     }
 
 
@@ -62,9 +67,11 @@ public class AdminAuthTests extends TestInit {
         adminAuthHomePage.openAdminHomePage();
         adminAuthHomePage.enterValidEmail(adminUsername);
         adminAuthHomePage.enterValidPassword(adminPassword);
-        adminAuthHomePage.clickLoginButton();
-        adminAuthHomePage.clickLogoutButton();
 
+        adminAuthHomePage.clickLoginButton();
+        Assertions.assertTrue(adminAuthHomePage.isDashboardDisplayed(), "Dashboard не відображається після входу");
+
+        adminAuthHomePage.clickLogoutButton();
         Assertions.assertTrue(adminAuthHomePage.isLoginFormDisplayed(), "Сесія не була інвалідована");
     }
 
@@ -115,7 +122,12 @@ public class AdminAuthTests extends TestInit {
             adminAuthHomePage.clickLoginButton();
 
 
-            String expectedUrl = "https://hop-admin-angular.onrender.com/layout/dashboard";
+            String expectedUrl = baseUrl;
+            if (!expectedUrl.endsWith("/")) {
+                expectedUrl += "/";
+            }
+            expectedUrl += "layout/dashboard";
+
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             try {
                 wait.until(ExpectedConditions.urlToBe(expectedUrl));
