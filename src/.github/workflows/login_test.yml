@@ -15,6 +15,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -34,6 +35,7 @@ jobs:
           key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             maven-${{ runner.os }}-
+
       - name: Install Chrome
         run: |
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
@@ -44,7 +46,10 @@ jobs:
       - name: Build and test with Maven
         run: |
           export CHROME_BIN=/usr/bin/google-chrome
-          mvn clean test -DADMIN_USERNAME='${{ secrets.ADMIN_USERNAME }}' -DADMIN_PASSWORD='${{ secrets.ADMIN_PASSWORD }}' -DBASE_URL='${{ secrets.BASE_URL }}'
+          mvn clean test \
+          -Dadmin.username='${{ secrets.ADMIN_USERNAME }}' \
+          -Dadmin.password='${{ secrets.ADMIN_PASSWORD }}' \
+          -Dbase.url='${{ secrets.BASE_URL }}'
         env:
           ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
