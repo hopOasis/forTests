@@ -16,7 +16,6 @@ import java.time.Duration;
              this.driver = driver;
          }
 
-
          int BASIC_TIME = 20;
 
          public WebElement waitElementToBeVisible(String locator) {
@@ -27,4 +26,20 @@ import java.time.Duration;
          public void openAdminHomePage() {
              driver.getCurrentUrl();
          }
+
+         public WebElement waitElementToBeVisible(String locator, int timeoutInSeconds) {
+             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+             return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
+         }
+
+         public WebElement waitElementToBeClickable(String locator) {
+             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(BASIC_TIME));
+             return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
+         }
+
+         public boolean waitForUrl(String url, int timeoutInSeconds) {
+             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
+             return wait.until(ExpectedConditions.urlToBe(url));
+         }
+
      }

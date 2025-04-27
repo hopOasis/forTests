@@ -11,8 +11,11 @@ public class ConfigLoader {
         try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
             if (input != null) {
                 properties.load(input);
+            } else {
+                System.err.println("Warning: config.properties file not found in classpath");
             }
         } catch (IOException e) {
+            System.err.println("Error loading config.properties: " + e.getMessage());
         }
     }
 

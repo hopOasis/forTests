@@ -31,8 +31,8 @@ public class AdminAuthTests extends TestInit {
         if (adminUsername == null || adminPassword == null || baseUrl == null) {
             Assertions.fail("Missing required environment variables: ADMIN_USERNAME, ADMIN_PASSWORD, BASE_URL");
         }
-
     }
+
 
     @Test
     public void testSuccessfulLogin() {
@@ -42,7 +42,6 @@ public class AdminAuthTests extends TestInit {
         adminAuthHomePage.enterValidPassword(adminPassword);
         adminAuthHomePage.clickLoginButton();
 
-        adminAuthHomePage.clickLoginButton();
         Assertions.assertTrue(adminAuthHomePage.isDashboardDisplayed(), "Dashboard не відображається після входу");
     }
 
@@ -78,22 +77,15 @@ public class AdminAuthTests extends TestInit {
     @Test
     public void testLogoutFunctionality() {
 
-        if (adminAuthHomePage.isDashboardDisplayed()) {
-            adminAuthHomePage.clickLogoutButton();
+        adminAuthHomePage.openAdminHomePage();
+        adminAuthHomePage.enterValidEmail(adminUsername);
+        adminAuthHomePage.enterValidPassword(adminPassword);
+        adminAuthHomePage.clickLoginButton();
 
-            adminAuthHomePage.openAdminHomePage();
-            adminAuthHomePage.enterValidEmail(adminUsername);
-            adminAuthHomePage.enterValidPassword(adminPassword);
-            adminAuthHomePage.clickLoginButton();
+        Assertions.assertTrue(adminAuthHomePage.isDashboardDisplayed(), "Dashboard is not displayed after login");
 
-            boolean isDashboardDisplayed = adminAuthHomePage.isDashboardDisplayed();
-            Assertions.assertTrue(isDashboardDisplayed, "Сторінка Dashboard не відображається після входу");
-
-            adminAuthHomePage.clickLogoutButton();
-
-            boolean isLoginFormDisplayed = adminAuthHomePage.isLoginFormDisplayed();
-            Assertions.assertTrue(isLoginFormDisplayed, "Сторінка входу не відображається після виходу");
-        }
+        adminAuthHomePage.clickLogoutButton();
+        Assertions.assertTrue(adminAuthHomePage.isLoginFormDisplayed(), "Login form is not displayed after logout");
     }
 
     @Test
