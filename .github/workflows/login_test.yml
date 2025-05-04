@@ -45,15 +45,16 @@ jobs:
 
       - name: Build and test with Maven
         run: |
-          export CHROME_BIN=/usr/bin/google-chrome
-          mvn clean test \
-          -Dadmin.username='${{ secrets.ADMIN_USERNAME }}' \
-          -Dadmin.password='${{ secrets.ADMIN_PASSWORD }}' \
-          -Dbase.url='${{ secrets.BASE_URL }}'
+         export CHROME_BIN=/usr/bin/google-chrome
+         mvn clean test \
+         -Dadmin.username="$ADMIN_USERNAME" \
+         -Dadmin.password="$ADMIN_PASSWORD" \
+         -Dbase.url="$BASE_URL"
         env:
-          ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
-          BASE_URL: ${{ secrets.BASE_URL }}
+         ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
+         ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+         BASE_URL: ${{ secrets.BASE_URL }}
+
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
