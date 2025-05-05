@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.ConfigLoader;
 
 import java.time.Duration;
 
@@ -22,21 +21,6 @@ import java.time.Duration;
          public WebElement waitElementToBeVisible(String locator) {
              WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(BASIC_TIME));
              return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
-         }
-
-         public WebElement waitElementToBeVisible(String locator, int timeoutInSeconds) {
-             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
-             return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
-         }
-
-         public WebElement waitElementToBeClickable(String locator) {
-             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(BASIC_TIME));
-             return wait.until(ExpectedConditions.elementToBeClickable(By.xpath(locator)));
-         }
-
-         public boolean waitForUrl(String url, int timeoutInSeconds) {
-             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeoutInSeconds));
-             return wait.until(ExpectedConditions.urlToBe(url));
          }
 
      }
