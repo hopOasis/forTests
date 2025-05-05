@@ -22,12 +22,8 @@ public class AdminAuthHomePage extends BasePage {
     }
 
     public void openAdminHomePage() {
-<<<<<<< HEAD:src/main/java/pages/AdminAuthHomePage.java
-        driver.get(BASE_URL);
-=======
         String url = ConfigLoader.getProperty("BASE_URL");
         driver.get(url);
->>>>>>> 4a68a17784bddd3db1c8d8920a4f06ea94b59929:login_tests/src/main/java/pages/AdminAuthHomePage.java
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(FIELD_EMAIL)));
     }
