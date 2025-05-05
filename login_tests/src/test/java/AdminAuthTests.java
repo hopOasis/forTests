@@ -106,28 +106,24 @@ public class AdminAuthTests extends TestInit {
     }
 
     @Test
-    public void testRedirectToDashboardAfterLogin () {
-
+    public void testRedirectToDashboardAfterLogin() {
         adminAuthHomePage.openAdminHomePage();
         adminAuthHomePage.enterValidEmail(adminUsername);
         adminAuthHomePage.enterValidPassword(adminPassword);
         adminAuthHomePage.clickLoginButton();
 
-
-        String expectedUrl = baseUrl;
-        if (!expectedUrl.endsWith("/")) {
-            expectedUrl += "/";
-        }
-        expectedUrl += "layout/dashboard";
-
+        String expectedUrl = baseUrl.endsWith("/") ? baseUrl + "layout/dashboard" : baseUrl + "/layout/dashboard";
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
         try {
             wait.until(ExpectedConditions.urlToBe(expectedUrl));
         } catch (TimeoutException e) {
             String errorMessage = adminAuthHomePage.getErrorMessage();
             Assertions.fail("Перенаправлення на Dashboard не відбулося. Повідомлення про помилку: " + errorMessage);
         }
+
         String currentUrl = driver.getCurrentUrl();
         Assertions.assertEquals(expectedUrl, currentUrl, "Після входу не відбувся перехід на сторінку Dashboard");
     }
+
 }

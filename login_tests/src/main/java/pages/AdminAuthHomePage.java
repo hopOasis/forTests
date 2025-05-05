@@ -10,11 +10,6 @@ import java.time.Duration;
 
 public class AdminAuthHomePage extends BasePage {
 
-    public AdminAuthHomePage(WebDriver driver) {
-        super(driver);
-    }
-
-    private final String BASE_URL = ConfigLoader.getProperty("BASE_URL");
     private final String FIELD_PASSWORD = ("//*[@placeholder='Введіть пароль']");
     private final String FIELD_EMAIL = ("//*[@placeholder='Введіть email']");
     private final String LOGIN_BUTTON = ("//button[@type='submit']");
@@ -22,8 +17,17 @@ public class AdminAuthHomePage extends BasePage {
     private final String LOGOUT_BUTTON = ("//button//span[contains(text(), 'Log out')]");
     private final String DASHBOARD_HEADING = ("//a[contains(@class, 'link') and contains(@href, '/layout/dashboard')]");
 
+    public AdminAuthHomePage(WebDriver driver) {
+        super(driver);
+    }
+
     public void openAdminHomePage() {
+<<<<<<< HEAD:src/main/java/pages/AdminAuthHomePage.java
         driver.get(BASE_URL);
+=======
+        String url = ConfigLoader.getProperty("BASE_URL");
+        driver.get(url);
+>>>>>>> 4a68a17784bddd3db1c8d8920a4f06ea94b59929:login_tests/src/main/java/pages/AdminAuthHomePage.java
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(FIELD_EMAIL)));
     }
@@ -79,7 +83,7 @@ public class AdminAuthHomePage extends BasePage {
 
     public boolean isDashboardDisplayed() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
             WebElement dashboard = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(DASHBOARD_HEADING)));
             return dashboard.isDisplayed();
         } catch (Exception e) {
