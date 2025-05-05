@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utils.ConfigLoader;
 
 import java.time.Duration;
 
@@ -21,10 +22,6 @@ import java.time.Duration;
          public WebElement waitElementToBeVisible(String locator) {
              WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(BASIC_TIME));
              return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(locator)));
-         }
-
-         public void openAdminHomePage() {
-             driver.getCurrentUrl();
          }
 
          public WebElement waitElementToBeVisible(String locator, int timeoutInSeconds) {

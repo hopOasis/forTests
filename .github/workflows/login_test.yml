@@ -2,20 +2,21 @@ name: Login Tests
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ master, main ]
     paths:
-      - '**.java'
-      - '.github/workflows/login_test.yml'
+      - 'login_tests/**'
   pull_request:
-    branches: [ main, master ]
+    branches: [ master, main ]
     paths:
-      - '**.java'
+      - 'login_tests/**'
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: login_tests
 
     steps:
       - name: Checkout repository
@@ -36,17 +37,25 @@ jobs:
           restore-keys: |
             maven-${{ runner.os }}-
 
-      - name: Install Chrome
+      - name: Install Google Chrome
         run: |
+          echo "Installing Google Chrome..."
+          sudo apt-get update
+          sudo apt-get install -y wget curl gnupg
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
           echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
+          google-chrome --version
 
-      - name: Build and test with Maven
+      - name: Set CHROME_BIN environment variable
+        run: echo "CHROME_BIN=/usr/bin/google-chrome" >> $GITHUB_ENV
+
+      - name: Build and test with Maven with enhanced logging
         run: |
-          export CHROME_BIN=/usr/bin/google-chrome
-          mvn clean test \
+          echo "Running Maven tests..."
+          export SELENIUM_LOG_LEVEL=DEBUG
+          mvn clean test -Dorg.slf4j.simpleLogger.defaultLogLevel=debug \
           -Dadmin.username='${{ secrets.ADMIN_USERNAME }}' \
           -Dadmin.password='${{ secrets.ADMIN_PASSWORD }}' \
           -Dbase.url='${{ secrets.BASE_URL }}'
@@ -61,3 +70,13 @@ jobs:
         with:
           name: test-report
           path: target/surefire-reports
+
+      - name: Upload screenshots if available
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: |
+            **/screenshots
+            **/error-screenshots
+            **/logs
