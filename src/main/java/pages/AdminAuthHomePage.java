@@ -24,7 +24,7 @@ public class AdminAuthHomePage extends BasePage {
 
     public void openAdminHomePage() {
         driver.get(BASE_URL);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(FIELD_EMAIL)));
     }
 
