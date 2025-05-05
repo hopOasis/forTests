@@ -44,15 +44,6 @@ jobs:
           sudo apt-get install -y google-chrome-stable
           google-chrome --version
 
-      # Додамо перевірку доступності сервера
-      - name: Check if server is reachable
-        run: |
-          # Використовуємо curl для перевірки доступності сервера
-          # Використовуємо сервер без шляху, щоб отримати головну сторінку
-          SERVER_URL="${{ secrets.BASE_URL }}"
-          echo "Checking server availability at: $SERVER_URL"
-          curl -I -L --max-time 30 "$SERVER_URL" || echo "Server might be unreachable or slow"
-
       - name: Build and test with Maven with enhanced logging
         run: |
           export CHROME_BIN=/usr/bin/google-chrome
