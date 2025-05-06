@@ -3,12 +3,8 @@ name: Login Tests
 on:
   push:
     branches: [ master, main ]
-    paths:
-      - 'login_tests/**'
   pull_request:
     branches: [ master, main ]
-    paths:
-      - 'login_tests/**'
   workflow_dispatch:
 
 jobs:
@@ -51,14 +47,21 @@ jobs:
       - name: Set CHROME_BIN environment variable
         run: echo "CHROME_BIN=/usr/bin/google-chrome" >> $GITHUB_ENV
 
-      - name: Build and test with Maven with enhanced logging
+      - name: Debug environment variables
+        run: |
+          echo "Checking environment variables"
+          echo "ADMIN_USERNAME set: ${{ secrets.ADMIN_USERNAME != '' }}"
+          echo "ADMIN_PASSWORD set: ${{ secrets.ADMIN_PASSWORD != '' }}"
+          echo "BASE_URL set: ${{ secrets.BASE_URL != '' }}"
+
+      - name: Build and test with Maven
         run: |
           echo "Running Maven tests..."
           export SELENIUM_LOG_LEVEL=DEBUG
           mvn clean test -Dorg.slf4j.simpleLogger.defaultLogLevel=debug \
-          -Dadmin.username='${{ secrets.ADMIN_USERNAME }}' \
-          -Dadmin.password='${{ secrets.ADMIN_PASSWORD }}' \
-          -Dbase.url='${{ secrets.BASE_URL }}'
+          -DADMIN_USERNAME='${{ secrets.ADMIN_USERNAME }}' \
+          -DADMIN_PASSWORD='${{ secrets.ADMIN_PASSWORD }}' \
+          -DBASE_URL='${{ secrets.BASE_URL }}'
         env:
           ADMIN_USERNAME: ${{ secrets.ADMIN_USERNAME }}
           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
@@ -69,7 +72,7 @@ jobs:
         if: always()
         with:
           name: test-report
-          path: target/surefire-reports
+          path: login_tests/target/surefire-reports
 
       - name: Upload screenshots if available
         uses: actions/upload-artifact@v4
@@ -77,6 +80,6 @@ jobs:
         with:
           name: screenshots
           path: |
-            **/screenshots
-            **/error-screenshots
-            **/logs
+            login_tests/**/screenshots
+            login_tests/**/error-screenshots
+            login_tests/**/logs
