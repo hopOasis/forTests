@@ -4,9 +4,6 @@
 # Build directories
 target/
 
-# Log files
-*.log
-
 # Compiled class files
 *.class
 

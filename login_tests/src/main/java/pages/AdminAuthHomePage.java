@@ -10,6 +10,10 @@ import java.time.Duration;
 
 public class AdminAuthHomePage extends BasePage {
 
+    public AdminAuthHomePage(WebDriver driver) {
+        super(driver);
+    }
+
     private final String FIELD_PASSWORD = ("//*[@placeholder='Введіть пароль']");
     private final String FIELD_EMAIL = ("//*[@placeholder='Введіть email']");
     private final String LOGIN_BUTTON = ("//button[@type='submit']");
@@ -17,9 +21,6 @@ public class AdminAuthHomePage extends BasePage {
     private final String LOGOUT_BUTTON = ("//button//span[contains(text(), 'Log out')]");
     private final String DASHBOARD_HEADING = ("//a[contains(@class, 'link') and contains(@href, '/layout/dashboard')]");
 
-    public AdminAuthHomePage(WebDriver driver) {
-        super(driver);
-    }
 
     public void openAdminHomePage() {
         String url = ConfigLoader.getProperty("BASE_URL");
